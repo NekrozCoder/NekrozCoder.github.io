@@ -1,23 +1,1280 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="浅析 LCA定义LCA（Least Common Ancestors），即最近公共祖先，指对于有根树 $T$ 的两个结点 $u$ 、$v$ ，最近公共祖先 $LCA(T, u, v)$ 表示一个结点 $x$, 满足 $x$ 是 $u$、$v$ 的祖先且 $x$ 的深度尽可能大。  下面给出一个自己画的图，用来解释LCA及其算法，顺便举个例子。  图1 - 一棵有根树T图中，$LCA(2, 4) &#x3D;">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【学习笔记】LCA 最近公共祖先">
+<meta property="og:url" content="http://nekrozcoder.github.io/2019/07/28/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91LCA%20%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/index.html">
+<meta property="og:site_name" content="Nekroz&#39;s Blog">
+<meta property="og:description" content="浅析 LCA定义LCA（Least Common Ancestors），即最近公共祖先，指对于有根树 $T$ 的两个结点 $u$ 、$v$ ，最近公共祖先 $LCA(T, u, v)$ 表示一个结点 $x$, 满足 $x$ 是 $u$、$v$ 的祖先且 $x$ 的深度尽可能大。  下面给出一个自己画的图，用来解释LCA及其算法，顺便举个例子。  图1 - 一棵有根树T图中，$LCA(2, 4) &#x3D;">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/11/Z2IpkT.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/11/Z2IYHP.png">
+<meta property="og:image" content="https://s2.ax1x.com/2019/07/11/Z2Ia4S.png">
+<meta property="og:image" content="https://s1.ax2x.com/2018/08/09/55ZgyX.png">
+<meta property="article:published_time" content="2019-07-27T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-07-31T05:34:22.882Z">
+<meta property="article:author" content="Nekroz">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="LCA">
+<meta property="article:tag" content="数据结构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2019/07/11/Z2IpkT.png">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nekrozcoder.github.io/2019/07/28/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91LCA%20%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>【学习笔记】LCA 最近公共祖先 | Nekroz's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nekroz's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/28/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91LCA%20%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【学习笔记】LCA 最近公共祖先
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-28 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-28T00:00:00+08:00">2019-07-28</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-31 13:34:22" itemprop="dateModified" datetime="2019-07-31T13:34:22+08:00">2019-07-31</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="浅析-LCA"><a href="#浅析-LCA" class="headerlink" title="浅析 LCA"></a>浅析 LCA</h1><h2 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h2><p>LCA（Least Common Ancestors），即最近公共祖先，指对于有根树 $T$ 的两个结点 $u$ 、$v$ ，最近公共祖先 $LCA(T, u, v)$ 表示一个结点 $x$, 满足 $x$ 是 $u$、$v$ 的祖先且 $x$ 的深度尽可能大。 </p>
+<p>下面给出一个自己画的图，用来解释LCA及其算法，顺便举个例子。</p>
+<p><img src="https://s2.ax1x.com/2019/07/11/Z2IpkT.png" alt=""></p>
+<script type="math/tex; mode=display">图1 - 一棵有根树T</script><p>图中，$LCA(2, 4) = 1$ ， $LCA(5, 6) = 2$ 。</p>
+<p>平常在信息学竞赛中求LCA一般有四种办法：</p>
+<ul>
+<li><p>用倍增法求解，预处理复杂度是 $O(n\log n)$ ,每次询问的复杂度是 $O(\log n)$, 属于在线解法。</p>
+</li>
+<li><p>利用欧拉序转化为RMQ问题，用ST表求解RMQ问题，预处理复杂度 $O(n + n \log n)$ ，每次询问的复杂度为 $O(1)$， 也是在线算法。</p>
+</li>
+<li><p>采用Tarjan算法求解，复杂度 $O(\alpha(n) + Q)$ ，属于离线算法。</p>
+</li>
+<li><p>利用树链剖分求解，复杂度预处理$O(n)$ ，单次查询 $O(\log n)$ ，属于在线算法。</p>
+</li>
+</ul>
+<p>为了能够更加流畅的阅读这篇文章，你需要掌握如下内容：</p>
+<ul>
+<li><p>能用dfs预处理出有根树中的父子关系和其到根的深度和距离（如果需要的话）</p>
+</li>
+<li><p>了解基础的倍增算法的思想</p>
+</li>
+<li><p>能够运用ST表求解RMQ问题</p>
+</li>
+<li><p>会使用带路径压缩的并查集</p>
+</li>
+<li><p>会使用最基本的树链剖分（不用维护其他信息）。</p>
+</li>
+<li><p>熟悉前向星存边（我在程序中都是前向星存边），程序中大多省略了这个部分，代码我在这里先给出:</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">edgetype</span> &#123;</span><br><span class="line">	<span class="type">int</span> to, next, dist;</span><br><span class="line">&#125; edge[MAXN &lt;&lt; <span class="number">1</span>];</span><br><span class="line"><span class="type">int</span> head[MAXN], cnt;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">AddEdge</span><span class="params">(<span class="type">int</span> from, <span class="type">int</span> to, <span class="type">int</span> dist)</span> </span>&#123;</span><br><span class="line">	edge[++cnt] = (edgetype)&#123;to, head[from], dist&#125;;</span><br><span class="line">	head[from] = cnt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<p>前置姿势很简单是吧QAQ</p>
+<h2 id="LCA问题的4种解法"><a href="#LCA问题的4种解法" class="headerlink" title="LCA问题的4种解法"></a>LCA问题的4种解法</h2><h3 id="倍增法"><a href="#倍增法" class="headerlink" title="倍增法"></a>倍增法</h3><p>最常用，也是最简单的算法，实质就是直接对暴力使用倍增优化将复杂度降低达到需求。</p>
+<h4 id="暴力求解LCA"><a href="#暴力求解LCA" class="headerlink" title="暴力求解LCA"></a>暴力求解LCA</h4><p>预处理，先对有根树 $T$ 进行一次 $dfs$ 得到每个结点的父亲和它的深度。</p>
+<p>对于每个查询 $LCA(T, u, v)$ ，我们假设 $depth(u) &gt; depth(v)$ （反正反了可以 $swap$ 一下调过来）。于是我们可以先将 $u$ 暴力跳到与 $v$ 相同深度，然后两个结点一起往上走，每次的步长都是 $1$ （即每次是从结点 $u$ 跳到它的父亲）。直到两个结点相遇位置，相遇的位置就是 $LCA(T, u, v)$ 。</p>
+<h4 id="倍增优化暴力"><a href="#倍增优化暴力" class="headerlink" title="倍增优化暴力"></a>倍增优化暴力</h4><p>了解了倍增基本思想的话我就直接来讲做法了。</p>
+<p>首先还是要来说明为什么可以用倍增优化暴力，因为找祖先这个操作是满足结合律的，这就是能够使用倍增算法的一个前提，如果看不懂也没关系，毕竟这个和理解程序没什么太大的关系。</p>
+<p>我们令 $anc(x, y)$ 表示结点 $x$ 的 $2^y$ 个祖先。倍增的递推式也很简单，就是 $anc(x, y) = anc(anc(x, y - 1),y - 1)$ ,即 $x$ 的 $2^y$ 个祖先是 $x$ 的 $2^{y -1}$ 个祖先的 $2^{y-1}$ 个祖先。</p>
+<p>有点绕？画个图就可以让自己清晰了，套回定义式就行。</p>
+<p>这个递推的部分我们可以放在dfs内部完成，也可以在dfs结束之后再单独执行，个人比较推荐单独执行。</p>
+<p>现在我们面临询问 $LCA(T, u, v)$ 。按照暴力的思想，我们要把相对较深的结点爬到与另外一个结点相同的深度。我们假设 $depth(u) &gt; depth(v)$ ，那么 $u$ 要上爬 $h=depth(u) - depth(v)$ 个祖先到达与 $v$ 相同的深度。</p>
+<p>考虑对这个 $h$ 进行二进制拆分，假设 $h = (13)_{10} = (1101)_2$ ，从低位开始， $h$ 在第 $0$ （从低位开始由低到高依次排列），第 $2$ ，第 $3$ 上的数是 $1$ ，也就意味着我们先 $u \leftarrow anc(u, 0)$ ，再 $u \leftarrow anc(u, 2)$ ，$u \leftarrow anc(u, 3)$ 。最后得到的 $u$ 就与 $v$ 深度相同了，可以看出，这些操作互不影响，调换位置也没有关系（这就是之前说的找祖先这个操作满足结合律的体现）。实现起来也很简单：</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">swim</span><span class="params">(<span class="type">int</span>&amp; x, <span class="type">int</span> h)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; h &gt; <span class="number">0</span>; i++) &#123;</span><br><span class="line">		<span class="keyword">if</span> (h &amp; <span class="number">1</span>) </span><br><span class="line">			x = anc[x][i];</span><br><span class="line">		h &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>那么我们让 $u$ ，$v$ 到达了同样的高度之后怎么做呢，分两种情况：</p>
+<ul>
+<li><p>$u$ 与 $v$ 相等，等价于 $v$ 是 $u$ 的祖先，那么 $LCA(T, u, v)$ 自然就等于 $v$ 了。</p>
+</li>
+<li><p>按照暴力的思路，这回我们要让这两个结点一起往上跳，用倍增思想就体现为每次上跳相等的高度。但是这一回我们就不可以从低位开始跳了，因为我们不知道要上跳多少才能与让 $u$ 和 $v$ 相遇，即枚举从高位开始，上跳的条件是 $anc(u, 0) \neq  anc(v, 0)$ 。</p>
+<p>为什么是这样呢？其实观察上面的倍增递推式我们可以知道，对于深度比根节点还要小的点，但是程序会将这个点编号赋为根，这样一来，我们同时上跳的时候要是 $anc(u, i) = anc(v, i)$ 的话我们就不知道这两个结点有没有跳过头（跳到 $LCA$ 的上面去了），只有 $anc(u, i) \neq anc(v, i)$ 才可以保证这两个点的深度还在 $LCA(T, u, v)$ 之下，然后就可以 $u \leftarrow anc(u,i) , v \leftarrow anc(v, i) $。</p>
+<p>当这个枚举的过程结束时，我们可以得到 $LCA(T, u, v) = anc(u, 0) = anc(v, 0)$ ，因为现在的 $u$ 和 $v$ 都已经上跳了最大限度，再往上跳是不符合条件的。</p>
+</li>
+</ul>
+<h4 id="利用倍增思想求解LCA问题"><a href="#利用倍增思想求解LCA问题" class="headerlink" title="利用倍增思想求解LCA问题"></a>利用倍增思想求解LCA问题</h4><p>还是考虑模拟一下吧，因为是在线算法，所以只模拟初始化和三组询问，但是上面画的树对于倍增算法来说有点浅，不过就将就一下吧。</p>
+<p>初始化表格：</p>
+<script type="math/tex; mode=display">表1.1 - anc数组</script><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>序号 $u$</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>$anc(u, 0)$</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2</td>
+<td>2</td>
+<td>4</td>
+<td>7</td>
+</tr>
+<tr>
+<td>$anc(u, 1)$</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>4</td>
+</tr>
+<tr>
+<td>$anc(u, 2)$</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>果然深度很浅啊，但是深一点的话接下来的欧拉序就要抗议了（表格花不下=汗=）</p>
+<p>考虑 $LCA(T, 6, 8) = 1$ ，先运行把 $8$ 跳到与 $6$ 相同的深度，需要向上跳 $4 - 3 = 1$ 个单位，跳到 $7$ 号点，即 $7=anc(8, 0)$ ，因为 $2^0 = 1$ 。</p>
+<p>接下来一起往上跳，再高位我们就不枚举了，当枚举到第 $1$ 位时，$6$ 和 $7$ 的 $2^1=2$ 个祖先恰好就是 $LCA$ ，但是我们的程序并不知道这一点，于是，跳过。。</p>
+<p>枚举到第 $0$ 位的时候，$2=anc(6, 0) \neq anc(7, 0)=4$ ，满足条件，向上跳，同时枚举过程结束，$1 = anc(2, 0)=anc(4, 0)$ 也就是答案。</p>
+<hr>
+<p>接下来考虑 $LCA(T, 5, 6) = 2$ ，由于 $5$ 和 $6$ 的深度相同，省略单独上跳的过程。</p>
+<p>接下来一起往上跳，枚举到第 $0$ 位时，发现 $anc(5, 0)=anc(6,0)$ ，不符合条件，忽略，枚举过程结束，$2=anc(5, 0)=anc(6,0)$，也是答案。</p>
+<hr>
+<p>最后考虑 $LCA(T, 1, 8) = 1$，首先将 $8$ 跳到与 $1$ 相同的深度，需要上跳 $4-1=3$ 个单位，跳到 $1$ 号点，即 $4=anc(8, 1), 1=anc(4, 0)$，因为 $2^0 + 2^1=1+2=3$ 。</p>
+<p>此时发现两个点重合了直接返回答案 $1$。</p>
+<p>以上就是模拟过程，因为树高较浅，枚举的过程比较短。如果还是不明白的话可以画一棵深度更大的树进行模拟，这里就不详细展开了。</p>
+<h4 id="参考代码及注释"><a href="#参考代码及注释" class="headerlink" title="参考代码及注释"></a>参考代码及注释</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> LCA &#123;</span><br><span class="line">	<span class="type">int</span> anc[MAXN][LOG], depth[MAXN];</span><br><span class="line">	<span class="type">int</span> dist[MAXN];</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> p, <span class="type">int</span> d)</span> </span>&#123;</span><br><span class="line">		anc[u][<span class="number">0</span>] = p; depth[u] = d;</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = head[u]; i; i = edge[i].next) &#123;</span><br><span class="line">			<span class="type">int</span> v = edge[i].to;</span><br><span class="line">			<span class="keyword">if</span> (v == p) <span class="keyword">continue</span>;</span><br><span class="line">			dist[v] = dist[u] + edge[i].dist;</span><br><span class="line">			<span class="built_in">dfs</span>(v, u, d + <span class="number">1</span>);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> root, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">		dist[root] = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">dfs</span>(root, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; j &lt; LOG; j++)  <span class="comment">//递推anc数组</span></span><br><span class="line">			<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">				anc[i][j] = anc[ anc[i][j - <span class="number">1</span>] ][j - <span class="number">1</span>];</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">swim</span><span class="params">(<span class="type">int</span>&amp; x, <span class="type">int</span> h)</span> </span>&#123; <span class="comment">//将x上爬h个单位</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">0</span>; h &gt; <span class="number">0</span>; i++) &#123;</span><br><span class="line">			<span class="keyword">if</span> (h &amp; <span class="number">1</span>) </span><br><span class="line">				x = anc[x][i];</span><br><span class="line">			h &gt;&gt;= <span class="number">1</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">if</span> (depth[x] &lt; depth[y]) std::<span class="built_in">swap</span>(x, y); <span class="comment">//置x为深度较深的点</span></span><br><span class="line">	    <span class="built_in">swim</span>(x, depth[x] - depth[y]); <span class="comment">//让x和y的深度相同</span></span><br><span class="line">	    <span class="keyword">if</span> (x == y) <span class="keyword">return</span> x;  <span class="comment">//如果相等直接返回</span></span><br><span class="line">	    <span class="keyword">for</span> (<span class="type">int</span> i = LOG - <span class="number">1</span>; i &gt;= <span class="number">0</span>; i--) <span class="comment">//从高位开始枚举每个二进制位</span></span><br><span class="line">	        <span class="keyword">if</span> (anc[x][i] != anc[y][i]) &#123;</span><br><span class="line">	            x = anc[x][i];</span><br><span class="line">	            y = anc[y][i];</span><br><span class="line">	        &#125; </span><br><span class="line">	    <span class="keyword">return</span> anc[x][<span class="number">0</span>];</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="评注"><a href="#评注" class="headerlink" title="评注"></a>评注</h4><p>这个算法主要就是比较好想（毕竟是优化版的暴力嘛~），一般比较容易理解，编程也容易。</p>
+<p>而且后面要讲的树链剖分求解LCA与倍增法的行为类似（不是思想，思想完全是两回事）。</p>
+<h3 id="欧拉序-ST表"><a href="#欧拉序-ST表" class="headerlink" title="欧拉序+ST表"></a>欧拉序+ST表</h3><h4 id="欧拉序"><a href="#欧拉序" class="headerlink" title="欧拉序"></a>欧拉序</h4><p>对有根树T进行深度优先遍历，无论是递归还是回溯，每次到达一个节点就把编号记录下来，得到一个长度为 $2N - 1$ 的序列，成为树 $T$ 的欧拉序列 $F$。</p>
+<p>按照深度优先遍历我们可以得到它的欧拉序和深度序列：</p>
+<script type="math/tex; mode=display">表 2.1 - 欧拉序列 F 和深度序列 B</script><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+<th>13</th>
+<th>14</th>
+<th>15</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欧拉序列F</td>
+<td>1</td>
+<td>2</td>
+<td>5</td>
+<td>2</td>
+<td>6</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>7</td>
+<td>8</td>
+<td>7</td>
+<td>4</td>
+<td>1</td>
+</tr>
+<tr>
+<td>深度序列B</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>为了方便，我们定义 $first(u)$ 表示 $u$ 结点的第一次出现的位置，那么我们根据上面的表格就可以得到 $n$ 个结点各自的 $first$ 值：</p>
+<script type="math/tex; mode=display">表2.2 - 各元素的first值</script><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>1</th>
+<th>2</th>
+<th>3</th>
+<th>4</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>first()</td>
+<td>1</td>
+<td>2</td>
+<td>8</td>
+<td>10</td>
+<td>3</td>
+<td>5</td>
+<td>11</td>
+<td>12</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>根据深度优先遍历的特点，我们可以知道，对于结点 $u$ 和结点 $v$, 我们不妨假设 $u$ 在 $v$ 之前被遍历，也就是说 $first(u) &lt; first(v)$ ，那么在 $u$ 遍历到 $v$ 过程中深度最小的点就是 $LCA(T, u, v)$ （这一点在Tarjan算法中也有运用）,假设我们求的是 $LCA(T, 6, 8) = 1$ ，那么我们把从 $6$ 遍历到 $8$ 时涉及到的顶点单独取出来，就可以得到下面一幅图：</p>
+<p><img src="https://s2.ax1x.com/2019/07/11/Z2IYHP.png" alt=""></p>
+<script type="math/tex; mode=display">图2 - 抽出结点后的子树T'</script><p>从图中，我们可以清晰得看出，$6$ 遍历到 $8$ 时深度最小的结点是 $1$ 也就是 $LCA(T, u, v)$ 。</p>
+<p>这样一来，我们就可以将 LCA 问题转化为RMQ问题：$LCA(T, u, v) = RMQ(B, first(u), first(v))$ 。</p>
+<h4 id="用欧拉序和ST表求解LCA问题"><a href="#用欧拉序和ST表求解LCA问题" class="headerlink" title="用欧拉序和ST表求解LCA问题"></a>用欧拉序和ST表求解LCA问题</h4><p>仍然以上图为例，假定 $u = 6$ , $v = 8$ 在图上很明显能够看出 $LCA(T, u, v) = 1$ 。同时我们把代表从 $u$ 遍历到 $v$ 的这个序列”抽“出来：</p>
+<script type="math/tex; mode=display">表2.3 - 抽取的欧拉序列 F‘ 和深度序列 B'</script><div class="table-container">
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>5</th>
+<th>6</th>
+<th>7</th>
+<th>8</th>
+<th>9</th>
+<th>10</th>
+<th>11</th>
+<th>12</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>欧拉序列F’</td>
+<td>6</td>
+<td>2</td>
+<td>1</td>
+<td>3</td>
+<td>1</td>
+<td>4</td>
+<td>7</td>
+<td>8</td>
+</tr>
+<tr>
+<td>深度序列B’</td>
+<td>3</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>1</td>
+<td>2</td>
+<td>3</td>
+<td>4</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>为什么要从原序列中抽取 $5$ ~ $12$ 这个串呢？原因很简单，$first(6) = 5$ ， $first(8)=12$ ，这个值上面的表已经给出了。</p>
+<p>可以看出，在这个序列中，深度最小的点的序号是 $7$ 和 $9$ 其值是 $1$ ，这不就是我们要的 $LCA(T, u, v)$ 吗！</p>
+<p>有了这个例子大家应该就很清楚了，具体实现的时候还要注意 $ST$ 表中存的不再只是那个最小值，而是最小值的下标，也就是表中的序号。</p>
+<h4 id="参考代码及注释-1"><a href="#参考代码及注释-1" class="headerlink" title="参考代码及注释"></a>参考代码及注释</h4><p>代码中 $value[]$ 代表欧拉序列 $F$，$depth[]$ 代表深度序列 $B$ 。</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> LCA &#123;</span><br><span class="line">    <span class="type">int</span> ST[MAXN &lt;&lt; <span class="number">1</span>][LOG];</span><br><span class="line">	<span class="type">int</span> value[MAXN &lt;&lt; <span class="number">1</span>], depth[MAXN &lt;&lt; <span class="number">1</span>], first[MAXN], len; <span class="comment">//欧拉序及深度序列相关</span></span><br><span class="line">	<span class="type">int</span> dist[MAXN];</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">calc</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123; <span class="comment">//利用下标进行运算</span></span><br><span class="line">        <span class="keyword">return</span> depth[x] &lt; depth[y] ? x : y;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> p, <span class="type">int</span> d)</span> </span>&#123;</span><br><span class="line">        value[++len] = u; depth[len] = d; first[u] = len; <span class="comment">//递归时将结点加入欧拉序列中，并记录first</span></span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = head[u]; i; i = edge[i].next) &#123;</span><br><span class="line">            <span class="type">int</span> v = edge[i].to;</span><br><span class="line">            <span class="keyword">if</span> (v == p) <span class="keyword">continue</span>;</span><br><span class="line">            dist[v] = dist[u] + edge[i].dist;</span><br><span class="line">            <span class="built_in">dfs</span>(v, u, d + <span class="number">1</span>);</span><br><span class="line">            value[++len] = u; depth[len] = d; <span class="comment">//回溯时将结点加入欧拉序列中</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> root)</span> </span>&#123;</span><br><span class="line">        len = <span class="number">0</span>; dist[root] = <span class="number">0</span>;</span><br><span class="line">        <span class="built_in">dfs</span>(root, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= len; i++) ST[i][<span class="number">0</span>] = i;</span><br><span class="line">        <span class="keyword">for</span> (<span class="type">int</span> j = <span class="number">1</span>; (<span class="number">1</span> &lt;&lt; j) &lt;= len; j++)  <span class="comment">//ST表倍增过程</span></span><br><span class="line">            <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i + (<span class="number">1</span> &lt;&lt; j) - <span class="number">1</span> &lt;= len; i++) </span><br><span class="line">                ST[i][j] = <span class="built_in">calc</span>(ST[i][j - <span class="number">1</span>], ST[i + (<span class="number">1</span> &lt;&lt; (j - <span class="number">1</span>))][j - <span class="number">1</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">        <span class="type">int</span> l = first[x], r = first[y]; </span><br><span class="line">        <span class="keyword">if</span> (l &gt; r) std::<span class="built_in">swap</span>(l, r); <span class="comment">//找到区间[l, r]</span></span><br><span class="line">        <span class="type">int</span> k = <span class="built_in">log2</span>(r - l + <span class="number">1</span>);</span><br><span class="line">        <span class="keyword">return</span> value[<span class="built_in">calc</span>(ST[l][k], ST[r - (<span class="number">1</span> &lt;&lt; k) + <span class="number">1</span>][k])];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="评注-1"><a href="#评注-1" class="headerlink" title="评注"></a>评注</h4><p>思想比较巧妙，虽说查询复杂度是 $O(1)$ 但是预处理的 $O(n \log n)$ 复杂度常数比较大，因为欧拉序列的长度是 $2n - 1$ 。所以有时候会跑不过倍增算法，心塞。</p>
+<p>另外，我们可以观察到深度序列 $B$ 相邻两个数的差为 $1$ ，在这种情况下求 RMQ 又被称为正负 $1$ RMQ问题，该问题是有 $O(n)-O(1)$ 解法的，但是比较麻烦，常数比较大，所以这里不予展开。</p>
+<h3 id="Tarjan-算法"><a href="#Tarjan-算法" class="headerlink" title="Tarjan 算法"></a>Tarjan 算法</h3><h4 id="Tarjan算法的主要思想"><a href="#Tarjan算法的主要思想" class="headerlink" title="Tarjan算法的主要思想"></a>Tarjan算法的主要思想</h4><p>Tarjan算法的核心思想是先进行一遍深度优先搜索，在讨论LCA与RMQ的关系 的时候，我们已经论述过 $u$ 向 $v$ 遍历过程中深度最小的点就是 $LCA(T, u, v)$ 。举个例子，假设我们求的是 $LCA(T, 6, 8) = 1$ ，那么我们把从 $6$ 遍历到 $8$ 时涉及到的顶点单独取出来，就可以得到下面一幅图：</p>
+<p>从图中，我们可以清晰地看出，$6$ 遍历到 $8$ 时深度最小的结点是 $1$ 也就是 $LCA(T, u, v)$ 。</p>
+<p>下面我们面临的问题就是如何快速求出两个给定结点去所回溯到的最远的点。</p>
+<p><img src="https://s2.ax1x.com/2019/07/11/Z2Ia4S.png" alt=""></p>
+<p>我们给每个结点 $x$ 记录一个 $f[x]$ 值，$f[x]$ 的意义是搜索时曾经从 $x$ 点回溯到 $f[x]$ 点，初始化时 $f[x]\leftarrow x$ 。</p>
+<p>接下来开始深度优先遍历，当遍历完一个结点的所有子树时，更新 $f[x]\leftarrow x$ 。同时，就可以处理关于 $x$ 的一部分询问（有些结点没有被访问过所以不会被处理），很明显的，对于询问 $LCA(T, x, y)$ ，如果 $y$ 被访问过了，我们就可以认为 $LCA(T, u, v)$ 是 $v$ 在搜索时曾经回溯到的最远点，至于 $f[x]$ 怎么维护，就要用到并查集了。</p>
+<p>这样，一次深度优先遍历之后，我们便得到了所有问题的答案。</p>
+<h4 id="用Tarjan算法求解LCA问题"><a href="#用Tarjan算法求解LCA问题" class="headerlink" title="用Tarjan算法求解LCA问题"></a>用Tarjan算法求解LCA问题</h4><p>有根树 $T$ 最上面已经给出了，而我们面临这样几个询问： $LCA(T, 5, 6), LCA(T, 5, 3), LCA(T, 6, 8)$ 。</p>
+<ul>
+<li><p>我们首先搜索到了 $1$ 号结点，向下搜索到 $2$ 号结点，再从 $2$ 号结点搜索到了 $5$ 号节点。</p>
+</li>
+<li><p>由于 $5$ 号节点时叶子结点，所以开始处理 $5$ 号结点的有关询问，发现 $6$ 号节点和 $3$ 号节点均未访问，不处理.</p>
+<p>回溯到 $2$ 号节点，$f[5] \leftarrow 2$。</p>
+<p>搜索到 $6$ 号节点。</p>
+</li>
+<li><p>处理 $6$ 号结点有关询问，发现 $5$ 号节点已经被访问过，于是第一个询问得到处理:$LCA(T, 5, 6) = seek(5) = f[5] = 2$ 。</p>
+<p>回溯到 $2$ 号结点，$f[6] \leftarrow 2$ 。回溯到 $1$ 号节点，$f[2] \leftarrow 1$ 。</p>
+<p>搜索 $3$ 号结点。</p>
+<p>此时的 $f$ 数组：</p>
+<p>| 序号 | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    |<br>| —— | —— | —— | —— | —— | —— | —— | —— | —— |<br>| f    | 1    | 1    | 3    | 4    | 2    | 2    | 7    | 8    |</p>
+</li>
+<li><p>处理 $3$ 号结点有关询问，发现 $5$ 号结点已经被访问过了，处理询问，$LCA(T, 5, 3) = seek(5) = f[f[6]] = 1$ ,同时因为路径压缩的原因 $f[5] \leftarrow f[2] = 1$ 。</p>
+<p>回溯到 $1$ 号节点， $f[3] \leftarrow 1$ 。</p>
+<p>搜索 $4$ 号结点，搜索 $7$ 号结点，搜索 $8$ 号结点</p>
+<p>此时的 $f$ 数组：</p>
+<p>| 序号 | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    |<br>| —— | —— | —— | —— | —— | —— | —— | —— | —— |<br>| f    | 1    | 1    | 1    | 4    | 1    | 2    | 7    | 8    |</p>
+</li>
+<li><p>处理与 $8$ 号结点有关询问，发现 $6$ 号结点已经被访问过了，处理询问， $LCA(T, 6, 8) = seek(6) = f[f[6]] = 1$ 。因为路径压缩 $f[6] \leftarrow f[2] = 1$ 。</p>
+<p>回溯到 $7$ 号结点，$f[8] \leftarrow 7$ ，回溯到 $4$ 号结点， $f[7] = 4$ ，回溯到 $1$ 号结点 $f[4] \leftarrow 1$ 。</p>
+<p>此时的f数组：</p>
+<p>| 序号 | 1    | 2    | 3    | 4    | 5    | 6    | 7    | 8    |<br>| —— | —— | —— | —— | —— | —— | —— | —— | —— |<br>| f    | 1    | 1    | 1    | 1    | 1    | 1    | 4    | 7    |</p>
+<p>算法结束。</p>
+</li>
+</ul>
+<p>其实最后的 $f$ 数组不全部是 $root = 1$ 的原因就是 $7$ 号结点和 $8$ 号结点没有进行路径压缩，否则的话所有结点最后的 $f$ 值都是根节点的编号。</p>
+<h4 id="参考代码及注释-2"><a href="#参考代码及注释-2" class="headerlink" title="参考代码及注释"></a>参考代码及注释</h4><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">namespace</span> LCA &#123;</span><br><span class="line">	edgetype qedge[MAXQ &lt;&lt; <span class="number">1</span>];</span><br><span class="line">	<span class="type">int</span> qhead[MAXN], qcnt;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">AddQuery</span><span class="params">(<span class="type">int</span> from, <span class="type">int</span> to, <span class="type">int</span> index)</span> </span>&#123; <span class="comment">//添加询问的前向星</span></span><br><span class="line">		qedge[++qcnt] = (edgetype)&#123;to, qhead[from], index&#125;;</span><br><span class="line">		qhead[from] = qcnt;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="type">int</span> u[MAXN], v[MAXN], ans[MAXN]; <span class="comment">//询问相关</span></span><br><span class="line">	<span class="type">int</span> f[MAXN], dist[MAXN];  </span><br><span class="line">	<span class="type">bool</span> visit[MAXN]; </span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">int</span> <span class="title">seek</span><span class="params">(<span class="type">int</span> u)</span> </span>&#123;  <span class="comment">// 路径压缩</span></span><br><span class="line">		<span class="keyword">return</span> f[u] == u ? u : f[u] = <span class="built_in">seek</span>(f[u]);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">dfs</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> p)</span> </span>&#123;   <span class="comment">//Tarjan算法的主要流程</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = head[u]; i; i = edge[i].next) &#123;  </span><br><span class="line">			<span class="type">int</span> v = edge[i].to;</span><br><span class="line">			<span class="keyword">if</span> (v == p) <span class="keyword">continue</span>;</span><br><span class="line">			dist[v] = dist[u] + edge[i].dist;</span><br><span class="line">			<span class="built_in">dfs</span>(v, u); </span><br><span class="line">			f[v] = u; <span class="comment">//回溯时修改 f 数组</span></span><br><span class="line">		&#125;</span><br><span class="line">		visit[u] = <span class="literal">true</span>; <span class="comment">//表示已访问</span></span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = qhead[u]; i; i = qedge[i].next) &#123;</span><br><span class="line">			<span class="type">int</span> v = qedge[i].to;</span><br><span class="line">			<span class="keyword">if</span> (visit[v]) <span class="comment">//如果另一个顶点也被访问过则处理询问</span></span><br><span class="line">				ans[qedge[i].dist] = <span class="built_in">seek</span>(v);</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="built_in">memset</span>(qhead, <span class="number">0</span>, <span class="keyword">sizeof</span> qhead); qcnt = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> root, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">		dist[root] = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">memset</span>(visit, <span class="literal">false</span>, <span class="keyword">sizeof</span> visit);</span><br><span class="line">		<span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) f[i] = i; <span class="comment">//并查集初始化</span></span><br><span class="line">		<span class="built_in">dfs</span>(root, <span class="number">0</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="评注-2"><a href="#评注-2" class="headerlink" title="评注"></a>评注</h4><p>由于Tarjan算法中存询问和存边所用到的struct的内容和加边函数是一模一样的，为了省事儿，就把两个拼在一起了，否则程序会比较复杂，写起来也麻烦。其实仅仅把这个当成一个像 STL 一样的黑盒代码，只要明白有哪些内置函数和作用就行了，写完赶紧折叠起来，不然强迫症就真的要受不了了（眼不见为净QAQ）。</p>
+<h3 id="树链剖分"><a href="#树链剖分" class="headerlink" title="树链剖分"></a>树链剖分</h3><h4 id="主要思想"><a href="#主要思想" class="headerlink" title="主要思想"></a>主要思想</h4><p>树链剖分求解LCA的行为与倍增法类似，都是往上跳。</p>
+<p>但树链剖分与倍增法的思想完全不同。</p>
+<p>对一棵树进行树链剖分之后会产生若干条重链和若干条轻边。学树链剖分的时候可以形象理解，认为重链是高速公路，而轻边是普通公路，理解的话就是重链可以一整条进行操作，而轻边只能一条一条进行操作。</p>
+<p>那么我们可以构筑出如下算法：</p>
+<ul>
+<li><p>有一个询问 $LCA(T, u, v)$ ，目标是让 $u$ 和 $v$ 跳到同一条重链上，然后深度浅的就是结果。</p>
+</li>
+<li><p>选择链顶深度深的那个结点往上跳，这里要注意一下，不是深度深的结点往上跳，这个反例在上图中不能体现，重新画个大点的图就明白了。</p>
+<p><img src="https://s1.ax2x.com/2018/08/09/55ZgyX.png" alt="55ZgyX.png"> </p>
+<p>其中蓝色的是重链，黑色的是轻边，考虑结点 $u$ 和结点 $v$ ，很显然它们的 LCA 是 $w$ ，但是假如我们让深度深的 $u$ 往上跳的话就是整个树的根了，显然不符合条件，反而链顶深度深的结点 $v$ （只有一个结点组成的重链），往上跳直接跳到 $w$ 结点，此时 $u$ 和 $v$ 在同一根重链上，而 $v$ 的深度较浅，则返回 $v$ 作为答案就可以了。而很显然的，如果结点 $u$ 要往上跳，那么就要 $u \leftarrow u-&gt;chain-&gt;top-&gt;father$ ，也就是跳到链顶的父亲上去，放心，肯定不会有结点跳到根以上的地方去的，因为根所在的重链链顶深度是最浅的，而且拥有这个深度的重链是唯一的。所以根所在的重链肯定不会往上跳，顶多是别的结点跳到了根所在的重链上。</p>
+</li>
+<li><p>接下来就只要重复第 $2$ 步，直到条件 $1$ 达成就可以了。</p>
+</li>
+</ul>
+<p>由于上跳是树链剖分的基本操作，而且主要学习的是树链剖分的思想，我就不给出具体的模拟过程了，其实只要看懂了上面对算法的说明，具体的实现就很简单了。</p>
+<h4 id="参考代码及注释-3"><a href="#参考代码及注释-3" class="headerlink" title="参考代码及注释"></a>参考代码及注释</h4><p>两个板子：</p>
+<p>数组版树链剖分</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"><span class="type">int</span> father[MAXN], depth[MAXN], size[MAXN], dist[MAXN]; <span class="comment">//树剖部分</span></span><br><span class="line"><span class="type">int</span> son[MAXN], top[MAXN];</span><br><span class="line"><span class="type">bool</span> visit[MAXN];</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs1</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> p, <span class="type">int</span> d)</span> </span>&#123;</span><br><span class="line">    father[u] = p, depth[u] = d, size[u] = <span class="number">1</span>, son[u] = <span class="number">0</span>, visit[u] = <span class="literal">true</span>;</span><br><span class="line">    <span class="type">int</span> maxsize = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[u]; i; i = edge[i].next) &#123;</span><br><span class="line">	    <span class="type">int</span> v = edge[i].to;</span><br><span class="line">		 <span class="keyword">if</span> (v == p || visit[v]) <span class="keyword">continue</span>;</span><br><span class="line">	    dist[v] = dist[u] + edge[i].dist;</span><br><span class="line">	    <span class="built_in">dfs1</span>(v, u, d + <span class="number">1</span>);</span><br><span class="line">	    size[u] += size[v];</span><br><span class="line">	    <span class="keyword">if</span> (size[v] &gt; maxsize) &#123;</span><br><span class="line">		    maxsize = size[v];</span><br><span class="line">		    son[u] = v;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs2</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> anc)</span> </span>&#123;</span><br><span class="line">    top[u] = anc, visit[u] = <span class="literal">true</span>;</span><br><span class="line">    <span class="keyword">if</span> (son[u]) <span class="built_in">dfs2</span>(son[u], anc);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[u]; i; i = edge[i].next) &#123;</span><br><span class="line">		<span class="type">int</span> v = edge[i].to;</span><br><span class="line">	    <span class="keyword">if</span> (v == father[u] || v == son[u] || visit[v]) <span class="keyword">continue</span>;</span><br><span class="line">	    <span class="built_in">dfs2</span>(v, v);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> LCA &#123;</span><br><span class="line">	<span class="function"><span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> root)</span> </span>&#123;</span><br><span class="line">		dist[root] = <span class="number">0</span>;</span><br><span class="line">		<span class="built_in">memset</span>(visit, <span class="literal">false</span>, <span class="keyword">sizeof</span> visit);</span><br><span class="line">		<span class="built_in">dfs1</span>(root, <span class="number">0</span>, <span class="number">1</span>);</span><br><span class="line">		<span class="built_in">memset</span>(visit, <span class="literal">false</span>, <span class="keyword">sizeof</span> visit);</span><br><span class="line">		<span class="built_in">dfs2</span>(root, root);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="type">long</span> <span class="type">long</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">while</span> (top[x] != top[y]) &#123; <span class="comment">//如果不在同一条重链上</span></span><br><span class="line">		    <span class="keyword">if</span> (depth[top[x]] &lt; depth[top[y]]) std::<span class="built_in">swap</span>(x, y); <span class="comment">//让x成为链顶深度较浅的结点</span></span><br><span class="line">		    x = father[top[x]]; <span class="comment">//x上跳</span></span><br><span class="line">		&#125;</span><br><span class="line">	    <span class="keyword">if</span> (depth[x] &gt; depth[y]) std::<span class="built_in">swap</span>(x, y);</span><br><span class="line">	    <span class="keyword">return</span> x; <span class="comment">//在同一条重链上时，深度浅的就是解</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>链式树链剖分（比较惊世骇俗）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> <span class="title class_">Node</span> &#123; <span class="comment">//树链剖分部分</span></span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Edge</span> *head;</span><br><span class="line">    <span class="keyword">struct</span> <span class="title class_">Chain</span> *chain;</span><br><span class="line">    Node *father, *son;</span><br><span class="line">    <span class="type">int</span> size, depth, number, dist;</span><br><span class="line">    <span class="type">bool</span> visit;</span><br><span class="line">&#125; info[MAXN];</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Edge</span> &#123;</span><br><span class="line">    Node *from, *to;</span><br><span class="line">    Edge *next;</span><br><span class="line">    <span class="type">int</span> dist;</span><br><span class="line">    <span class="built_in">Edge</span>(Node *from, Node *to, <span class="type">int</span> dist) : <span class="built_in">from</span>(from), <span class="built_in">to</span>(to), <span class="built_in">next</span>(from-&gt;head), <span class="built_in">dist</span>(dist) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">Chain</span> &#123;</span><br><span class="line">    Node *top;</span><br><span class="line">    <span class="built_in">Chain</span>(Node *top) : <span class="built_in">top</span>(top) &#123;&#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">AddEdge</span><span class="params">(<span class="type">int</span> from, <span class="type">int</span> to, <span class="type">int</span> dist)</span> </span>&#123; <span class="comment">//链式专属前向星</span></span><br><span class="line">    info[from].head = <span class="keyword">new</span> <span class="built_in">Edge</span>(&amp;info[from], &amp;info[to], dist);</span><br><span class="line">    info[to].head = <span class="keyword">new</span> <span class="built_in">Edge</span>(&amp;info[to], &amp;info[from], dist);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs1</span><span class="params">(Node *u)</span> </span>&#123;</span><br><span class="line">    u-&gt;visit = <span class="literal">true</span>;</span><br><span class="line">    u-&gt;size = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (Edge *e = u-&gt;head; e; e = e-&gt;next) &#123;</span><br><span class="line">	    Node *v = e-&gt;to;</span><br><span class="line">	    <span class="keyword">if</span> (!v-&gt;visit) &#123;</span><br><span class="line">		    v-&gt;father = u;</span><br><span class="line">		    v-&gt;depth = u-&gt;depth + <span class="number">1</span>;</span><br><span class="line">		    v-&gt;dist = u-&gt;dist + e-&gt;dist;</span><br><span class="line">		    <span class="built_in">dfs1</span>(v);</span><br><span class="line">		    u-&gt;size += v-&gt;size;</span><br><span class="line">		    <span class="keyword">if</span> (!u-&gt;son || u-&gt;son-&gt;size &lt; v-&gt;size) </span><br><span class="line">			    u-&gt;son = v;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">dfs2</span><span class="params">(Node *u)</span> </span>&#123;</span><br><span class="line">    <span class="keyword">if</span> (!u-&gt;father || u != u-&gt;father-&gt;son) </span><br><span class="line">	    u-&gt;chain = <span class="keyword">new</span> <span class="built_in">Chain</span>(u);</span><br><span class="line">	<span class="keyword">else</span> u-&gt;chain = u-&gt;father-&gt;chain;</span><br><span class="line">    <span class="keyword">if</span> (u-&gt;son) <span class="built_in">dfs2</span>(u-&gt;son);</span><br><span class="line">    <span class="keyword">for</span> (Edge *e = u-&gt;head; e; e = e-&gt;next) &#123; </span><br><span class="line">	    Node *v = e-&gt;to;</span><br><span class="line">	    <span class="keyword">if</span> (v-&gt;father == u &amp;&amp; v != u-&gt;son) </span><br><span class="line">		    <span class="built_in">dfs2</span>(v);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">namespace</span> LCA &#123;</span><br><span class="line">    <span class="function"><span class="keyword">inline</span> <span class="type">void</span> <span class="title">init</span><span class="params">(<span class="type">int</span> root, <span class="type">int</span> n)</span> </span>&#123;</span><br><span class="line">	    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++)</span><br><span class="line">		    info[i].number = i;</span><br><span class="line">	    info[root].dist = <span class="number">0</span>;</span><br><span class="line">	    info[root].depth = <span class="number">1</span>;</span><br><span class="line">	    <span class="built_in">dfs1</span>(&amp;info[root]); <span class="comment">//dfs的参数是指针，所以要取地址再执行</span></span><br><span class="line">	    <span class="built_in">dfs2</span>(&amp;info[root]);</span><br><span class="line">	&#125;</span><br><span class="line">    <span class="function"><span class="type">int</span> <span class="title">query</span><span class="params">(<span class="type">int</span> x, <span class="type">int</span> y)</span> </span>&#123;</span><br><span class="line">	    Node *u = &amp;info[x], *v = &amp;info[y]; <span class="comment">//取出地址</span></span><br><span class="line">	    <span class="keyword">while</span> (u-&gt;chain != v-&gt;chain) &#123;</span><br><span class="line">		    <span class="keyword">if</span> (u-&gt;chain-&gt;top-&gt;depth &lt; v-&gt;chain-&gt;top-&gt;depth) std::<span class="built_in">swap</span>(u, v);</span><br><span class="line">		    u = u-&gt;chain-&gt;top-&gt;father;</span><br><span class="line">		&#125;</span><br><span class="line">	    <span class="keyword">if</span> (u-&gt;depth &gt; v-&gt;depth) std::<span class="built_in">swap</span>(u, v);</span><br><span class="line">	    <span class="keyword">return</span> u-&gt;number; <span class="comment">//返回深度浅的结点的编号</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="评注-3"><a href="#评注-3" class="headerlink" title="评注"></a>评注</h4><p>其实这里重要的是思想，而不是代码（因为每个人的树剖板子不一样啊）。</p>
+<p>然而网上很多标题称是树剖的题解里面都是用树链剖分实现LCA，导致找树剖题目练手时一时间找不到好的题目做。</p>
+<h2 id="对LCA问题的四种算法的小结"><a href="#对LCA问题的四种算法的小结" class="headerlink" title="对LCA问题的四种算法的小结"></a>对LCA问题的四种算法的小结</h2><p>上面论述了LCA问题的四种常用的基本解法，回答询问强制在线的话可以考虑转化为RMQ问题或者使用树链剖分。如果不强制在线的话Tarjan，ST表，树剖均可，具体问题具体分析。</p>
+
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+          
+            <a href="/tags/LCA/" rel="tag"># LCA</a>
+          
+            <a href="/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" rel="tag"># 数据结构</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/27/hello-world/" rel="next" title="Hello World">
+                <i class="fa fa-chevron-left"></i> Hello World
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/30/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91CF%20731D%2080-th%20Level%20Archeology/" rel="prev" title="【解题报告】 CF 731D 80-th Level Archeology">
+                【解题报告】 CF 731D 80-th Level Archeology <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image"
+      src="/images/logo.jpg"
+      alt="Nekroz"/>
+  
+  <p class="site-author-name" itemprop="name">Nekroz</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/%20%7C%7C%20archive">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/%20%7C%7C%20tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/nekrozcoder" title="GitHub &rarr; https://github.com/nekrozcoder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%B5%85%E6%9E%90-LCA"><span class="nav-number">1.</span> <span class="nav-text">浅析 LCA</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89"><span class="nav-number">1.1.</span> <span class="nav-text">定义</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LCA%E9%97%AE%E9%A2%98%E7%9A%844%E7%A7%8D%E8%A7%A3%E6%B3%95"><span class="nav-number">1.2.</span> <span class="nav-text">LCA问题的4种解法</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%80%8D%E5%A2%9E%E6%B3%95"><span class="nav-number">1.2.1.</span> <span class="nav-text">倍增法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9A%B4%E5%8A%9B%E6%B1%82%E8%A7%A3LCA"><span class="nav-number">1.2.1.1.</span> <span class="nav-text">暴力求解LCA</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%80%8D%E5%A2%9E%E4%BC%98%E5%8C%96%E6%9A%B4%E5%8A%9B"><span class="nav-number">1.2.1.2.</span> <span class="nav-text">倍增优化暴力</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A9%E7%94%A8%E5%80%8D%E5%A2%9E%E6%80%9D%E6%83%B3%E6%B1%82%E8%A7%A3LCA%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.1.3.</span> <span class="nav-text">利用倍增思想求解LCA问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E9%87%8A"><span class="nav-number">1.2.1.4.</span> <span class="nav-text">参考代码及注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E6%B3%A8"><span class="nav-number">1.2.1.5.</span> <span class="nav-text">评注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E5%BA%8F-ST%E8%A1%A8"><span class="nav-number">1.2.2.</span> <span class="nav-text">欧拉序+ST表</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%AC%A7%E6%8B%89%E5%BA%8F"><span class="nav-number">1.2.2.1.</span> <span class="nav-text">欧拉序</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%AC%A7%E6%8B%89%E5%BA%8F%E5%92%8CST%E8%A1%A8%E6%B1%82%E8%A7%A3LCA%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.2.2.</span> <span class="nav-text">用欧拉序和ST表求解LCA问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E9%87%8A-1"><span class="nav-number">1.2.2.3.</span> <span class="nav-text">参考代码及注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E6%B3%A8-1"><span class="nav-number">1.2.2.4.</span> <span class="nav-text">评注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Tarjan-%E7%AE%97%E6%B3%95"><span class="nav-number">1.2.3.</span> <span class="nav-text">Tarjan 算法</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Tarjan%E7%AE%97%E6%B3%95%E7%9A%84%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">1.2.3.1.</span> <span class="nav-text">Tarjan算法的主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8Tarjan%E7%AE%97%E6%B3%95%E6%B1%82%E8%A7%A3LCA%E9%97%AE%E9%A2%98"><span class="nav-number">1.2.3.2.</span> <span class="nav-text">用Tarjan算法求解LCA问题</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E9%87%8A-2"><span class="nav-number">1.2.3.3.</span> <span class="nav-text">参考代码及注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E6%B3%A8-2"><span class="nav-number">1.2.3.4.</span> <span class="nav-text">评注</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%A0%91%E9%93%BE%E5%89%96%E5%88%86"><span class="nav-number">1.2.4.</span> <span class="nav-text">树链剖分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E6%80%9D%E6%83%B3"><span class="nav-number">1.2.4.1.</span> <span class="nav-text">主要思想</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%82%E8%80%83%E4%BB%A3%E7%A0%81%E5%8F%8A%E6%B3%A8%E9%87%8A-3"><span class="nav-number">1.2.4.2.</span> <span class="nav-text">参考代码及注释</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E8%AF%84%E6%B3%A8-3"><span class="nav-number">1.2.4.3.</span> <span class="nav-text">评注</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%B9LCA%E9%97%AE%E9%A2%98%E7%9A%84%E5%9B%9B%E7%A7%8D%E7%AE%97%E6%B3%95%E7%9A%84%E5%B0%8F%E7%BB%93"><span class="nav-number">1.3.</span> <span class="nav-text">对LCA问题的四种算法的小结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nekroz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

@@ -1,23 +1,970 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="传送门 $\text{Description}$在基环树上求解最大点独立集问题。 有点学术啊。那我先来解释一下吧。 基环树基环树 顾名思义，就是基于一个环上的树，也就是一个树中有一个环。由于原题中把骑士看成结点，憎恨关系看成边之后就得到了一个有 $n$ 个结点， $n$ 条边的图，我们知道由 $n$ 个结点，  $n - 1$ 条边组成的连通图是一棵树。那么拥有 $n$ 个结点和 $n$ 条边的连">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【解题报告】BZOJ 1040 [ZJOI2008] 骑士">
+<meta property="og:url" content="http://nekrozcoder.github.io/2019/09/24/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1040-[ZJOI2008]-%E9%AA%91%E5%A3%AB/index.html">
+<meta property="og:site_name" content="Nekroz&#39;s Blog">
+<meta property="og:description" content="传送门 $\text{Description}$在基环树上求解最大点独立集问题。 有点学术啊。那我先来解释一下吧。 基环树基环树 顾名思义，就是基于一个环上的树，也就是一个树中有一个环。由于原题中把骑士看成结点，憎恨关系看成边之后就得到了一个有 $n$ 个结点， $n$ 条边的图，我们知道由 $n$ 个结点，  $n - 1$ 条边组成的连通图是一棵树。那么拥有 $n$ 个结点和 $n$ 条边的连">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-24T11:53:55.594Z">
+<meta property="article:author" content="Nekroz">
+<meta property="article:tag" content="解题报告">
+<meta property="article:tag" content="动态规划">
+<meta property="article:tag" content="基环树">
+<meta property="article:tag" content="树形DP">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nekrozcoder.github.io/2019/09/24/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1040-[ZJOI2008]-%E9%AA%91%E5%A3%AB/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>【解题报告】BZOJ 1040 [ZJOI2008] 骑士 | Nekroz's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nekroz's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/09/24/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1040-%5BZJOI2008%5D-%E9%AA%91%E5%A3%AB/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【解题报告】BZOJ 1040 [ZJOI2008] 骑士
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-24 00:00:00 / 修改时间：19:53:55" itemprop="dateCreated datePublished" datetime="2019-09-24T00:00:00+08:00">2019-09-24</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p><a target="_blank" rel="noopener" href="https://www.lydsy.com/JudgeOnline/problem.php?id=1040">传送门</a></p>
+<h3 id="text-Description"><a href="#text-Description" class="headerlink" title="$\text{Description}$"></a>$\text{Description}$</h3><p>在基环树上求解最大点独立集问题。</p>
+<p>有点学术啊。那我先来解释一下吧。</p>
+<h4 id="基环树"><a href="#基环树" class="headerlink" title="基环树"></a>基环树</h4><p><strong>基环树</strong> 顾名思义，就是基于一个环上的树，也就是一个树中有一个环。由于原题中把骑士看成结点，憎恨关系看成边之后就得到了一个有 $n$ 个结点， $n$ 条边的<strong>图</strong>，我们知道由 $n$ 个结点，  $n - 1$ 条边组成的<strong>连通图</strong>是一棵树。那么拥有 $n$ 个结点和 $n$ 条边的<strong>连通图</strong>就是一棵基环树。这样一来，原题的图就可以抽象成一个基环树<strong>森林</strong>。</p>
+<h4 id="最大点独立集"><a href="#最大点独立集" class="headerlink" title="最大点独立集"></a>最大点独立集</h4><p>一个图的点独立集是原图总点集的一个子集，且点独立集中任意两个顶点均不相邻。简单点来说就是从图中挑点，所取的点两两不相邻。</p>
+<p>图的最大点独立集就是顶点数最多的点独立集。</p>
+<p>但是本题是带点权的，这样一来就要稍微更改一下定义，我们定义图的最大带权点独立集就是总权重（集合中所有点的权重的和）最大的点独立集。</p>
+<h3 id="text-Solution"><a href="#text-Solution" class="headerlink" title="$\text{Solution}$"></a>$\text{Solution}$</h3><p>假如这是个森林的话就很简单，就是 <a target="_blank" rel="noopener" href="https://blog.csdn.net/Diogenes_/article/details/80556493">没有上司的舞会</a> 。</p>
+<p>这里面详细介绍了怎样解决树上的最大点独立集问题，这里就不再赘述。</p>
+<p>但是带权的话，状态转移方程就要修改一下：</p>
+<p>我们定义 $d(i, 0)$ 表示在以 $i$ 为根的子树中，不取 $i$ 所能达到的最大权重。</p>
+<p>相应的，$d(i, 1)$  表示以 $i$ 为根的子树中，取 $i$ 所能达到的最大权重。</p>
+<script type="math/tex; mode=display">
+d(u, 0) = \sum_{(u, v) \in E}{max\{ d(v, 1), d(v, 0)\}} \\
+d(u, 1) = \sum_{(u, v) \in E}d(v, 0)</script><p>由于上面的转移方程是对付树的，基环树又是树的特殊变种（基环树不是树）。考虑怎样对基环树进行处理使之可以用上面的方法解决。</p>
+<p>考虑到基环树删去环上的一条边就变成了一棵树（含有 $n$ 个结点及 $n - 1$ 条边且保证连通）。</p>
+<p>我们就可以设计出一个算法：找到这个基环树中的环，并找到其上任意一条边 $(u, v)$ （所有边的地位等同），然后把它“删掉”（在dp过程中不经过这条边），让它变成一棵树，接下来我们考虑添加这条边对结果的影响。</p>
+<p>很显然，多了这条边， $u$ 和 $v$ 不可以同时选取，这样子就会有三种情况：</p>
+<ul>
+<li>选 $u$ , 不选 $v$</li>
+<li>选 $v$，不选 $u$</li>
+<li>既不选 $u$ 也不选 $v$ </li>
+</ul>
+<p>但是这样是很难处理的。我们可以考虑合并成两种情况：</p>
+<ul>
+<li><strong>不选</strong> $u$ , $v$ 随意</li>
+<li><strong>不选</strong> $v$ , $u$ 随意</li>
+</ul>
+<p>这样就可以解决问题了。</p>
+<p>我们在solve完 $u$ 结点之后，保存 $p = d(u, 0)$ ，再solve $v$ 结点，保存 $q = d(v, 0)$ 再取 $\max{p, q}$ 加入 $Ans$ 即可。这样一来就保证了 $u$ 和 $v$ 不会同时选中，也保证了解的最优性。</p>
+<h3 id="text-Code"><a href="#text-Code" class="headerlink" title="$\text{Code}$"></a>$\text{Code}$</h3><figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstdio&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;cstring&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;iostream&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">include</span><span class="string">&lt;algorithm&gt;</span></span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> MAXN 1000010</span></span><br><span class="line"><span class="meta">#<span class="keyword">define</span> max(x, y) ((x) &gt; (y) ? (x) : (y))</span></span><br><span class="line"><span class="type">int</span> value[MAXN], a, b;</span><br><span class="line"><span class="type">long</span> <span class="type">long</span> f[MAXN][<span class="number">2</span>];</span><br><span class="line"><span class="keyword">struct</span> <span class="title class_">edgeType</span> &#123;</span><br><span class="line">    <span class="type">int</span> to, next;</span><br><span class="line">&#125; edge[MAXN &lt;&lt; <span class="number">1</span>];</span><br><span class="line"><span class="type">int</span> head[MAXN], vis[MAXN], n, s, x, y, cut;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">addEdge</span><span class="params">(<span class="type">int</span> from, <span class="type">int</span> to)</span> </span>&#123;</span><br><span class="line">    <span class="type">static</span> <span class="type">int</span> cnt = <span class="number">0</span>;</span><br><span class="line">    edge[cnt] = (edgeType)&#123;to, head[from]&#125;;</span><br><span class="line">    head[from] = cnt++;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">findCycle</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> p)</span> </span>&#123;</span><br><span class="line">    vis[u] = <span class="number">1</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[u]; ~i; i = edge[i].next) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((i ^ <span class="number">1</span>) == p) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> v = edge[i].to;</span><br><span class="line">        <span class="keyword">if</span> (vis[v]) &#123;</span><br><span class="line">            x = u, y = v;</span><br><span class="line">            cut = i;</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        &#125;</span><br><span class="line">        <span class="built_in">findCycle</span>(v, i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">void</span> <span class="title">solve</span><span class="params">(<span class="type">int</span> u, <span class="type">int</span> p)</span> </span>&#123;</span><br><span class="line">    f[u][<span class="number">0</span>] = <span class="number">0</span>;</span><br><span class="line">    f[u][<span class="number">1</span>] = value[u];</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = head[u]; ~i; i = edge[i].next) &#123;</span><br><span class="line">        <span class="keyword">if</span> ((i ^ <span class="number">1</span>) == p) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="keyword">if</span> (i == cut || (i ^ <span class="number">1</span>) == cut)</span><br><span class="line">            <span class="keyword">continue</span>;</span><br><span class="line">        <span class="type">int</span> v = edge[i].to;</span><br><span class="line">        <span class="built_in">dfs</span>(v, i);</span><br><span class="line">        f[u][<span class="number">1</span>] += f[v][<span class="number">0</span>];</span><br><span class="line">        f[u][<span class="number">0</span>] += <span class="built_in">max</span>(f[v][<span class="number">1</span>], f[v][<span class="number">0</span>]);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="built_in">memset</span>(head, <span class="number">-1</span>, <span class="keyword">sizeof</span> head);</span><br><span class="line">    <span class="built_in">scanf</span>(<span class="string">&quot;%d&quot;</span>, &amp;n);</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="built_in">scanf</span>(<span class="string">&quot;%d%d&quot;</span>, &amp;a, &amp;b);</span><br><span class="line">        <span class="built_in">addEdge</span>(i, b);</span><br><span class="line">        <span class="built_in">addEdge</span>(b, i);</span><br><span class="line">        value[i] = a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">long</span> <span class="type">long</span> ans = <span class="number">0</span>;</span><br><span class="line">    <span class="keyword">for</span> (<span class="type">int</span> i = <span class="number">1</span>; i &lt;= n; i++) &#123;</span><br><span class="line">        <span class="keyword">if</span> (vis[i]) <span class="keyword">continue</span>;</span><br><span class="line">        <span class="built_in">findCycle</span>(i, <span class="number">-2</span>);</span><br><span class="line">        <span class="built_in">solve</span>(x, <span class="number">-1</span>);</span><br><span class="line">        <span class="type">long</span> <span class="type">long</span> temp = f[x][<span class="number">0</span>];</span><br><span class="line">        <span class="built_in">solve</span>(y, <span class="number">-1</span>);</span><br><span class="line">        temp = <span class="built_in">max</span>(temp, f[y][<span class="number">0</span>]);</span><br><span class="line">        ans += temp; </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="built_in">printf</span>(<span class="string">&quot;%lld&quot;</span>, ans);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A/" rel="tag"># 解题报告</a>
+          
+            <a href="/tags/%E5%8A%A8%E6%80%81%E8%A7%84%E5%88%92/" rel="tag"># 动态规划</a>
+          
+            <a href="/tags/%E5%9F%BA%E7%8E%AF%E6%A0%91/" rel="tag"># 基环树</a>
+          
+            <a href="/tags/%E6%A0%91%E5%BD%A2DP/" rel="tag"># 树形DP</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/17/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1562-%5BNOI2009%5D%E5%8F%98%E6%8D%A2%E5%BA%8F%E5%88%97/" rel="next" title="【解题报告】BZOJ 1562 [NOI2009]变换序列">
+                <i class="fa fa-chevron-left"></i> 【解题报告】BZOJ 1562 [NOI2009]变换序列
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/24/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91CRT-&-ExtendedCRT/" rel="prev" title="【学习笔记】CRT & ExtendedCRT">
+                【学习笔记】CRT & ExtendedCRT <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image"
+      src="/images/logo.jpg"
+      alt="Nekroz"/>
+  
+  <p class="site-author-name" itemprop="name">Nekroz</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/%20%7C%7C%20archive">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/%20%7C%7C%20tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/nekrozcoder" title="GitHub &rarr; https://github.com/nekrozcoder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#text-Description"><span class="nav-number">1.</span> <span class="nav-text">$\text{Description}$</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%9F%BA%E7%8E%AF%E6%A0%91"><span class="nav-number">1.1.</span> <span class="nav-text">基环树</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%9C%80%E5%A4%A7%E7%82%B9%E7%8B%AC%E7%AB%8B%E9%9B%86"><span class="nav-number">1.2.</span> <span class="nav-text">最大点独立集</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#text-Solution"><span class="nav-number">2.</span> <span class="nav-text">$\text{Solution}$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#text-Code"><span class="nav-number">3.</span> <span class="nav-text">$\text{Code}$</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nekroz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

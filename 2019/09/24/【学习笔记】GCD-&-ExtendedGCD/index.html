@@ -1,23 +1,946 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ page.title }} | {{ title }}{% endblock %}
 
-{% block page_class %}page-post-detail{% endblock %}
 
-{% block content %}
 
-  <div id="posts" class="posts-expand">
-    {{ post_template.render(page) }}
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta name="description" content="$\text{GCD}$普通的 $\gcd$ 算法相信我不用讲了吧（辗转相除法如果有问题的话应该不会来看我的 $\text{blog}$）。 $\text{ExtendedGCD}$接下来是拓展的欧几里得算法。 拓展欧几里得算法是用来求已知 $(a, b)$ 时，求解一组 $(x, y)$ 使得 $ax + by &#x3D; \gcd(a,b)$ 。 因为 \gcd(a, b) &#x3D; \gcd(b, a \">
+<meta property="og:type" content="article">
+<meta property="og:title" content="【学习笔记】GCD &amp; ExtendedGCD">
+<meta property="og:url" content="http://nekrozcoder.github.io/2019/09/24/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91GCD-&-ExtendedGCD/index.html">
+<meta property="og:site_name" content="Nekroz&#39;s Blog">
+<meta property="og:description" content="$\text{GCD}$普通的 $\gcd$ 算法相信我不用讲了吧（辗转相除法如果有问题的话应该不会来看我的 $\text{blog}$）。 $\text{ExtendedGCD}$接下来是拓展的欧几里得算法。 拓展欧几里得算法是用来求已知 $(a, b)$ 时，求解一组 $(x, y)$ 使得 $ax + by &#x3D; \gcd(a,b)$ 。 因为 \gcd(a, b) &#x3D; \gcd(b, a \">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2019-09-23T16:00:00.000Z">
+<meta property="article:modified_time" content="2019-09-24T12:17:31.362Z">
+<meta property="article:author" content="Nekroz">
+<meta property="article:tag" content="学习笔记">
+<meta property="article:tag" content="数学">
+<meta property="article:tag" content="数论">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nekrozcoder.github.io/2019/09/24/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91GCD-&-ExtendedGCD/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>【学习笔记】GCD & ExtendedGCD | Nekroz's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nekroz's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
   </div>
 
-{% endblock %}
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
 
-{% block sidebar %}
-  {{ sidebar_template.render(true) }}
-{% endblock %}
 
-{% block script_extra %}
-  {% include '_scripts/pages/post-details.swig' %}
-{% endblock %}
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/09/24/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91GCD-&-ExtendedGCD/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">【学习笔记】GCD & ExtendedGCD
+
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-09-24 00:00:00 / 修改时间：20:17:31" itemprop="dateCreated datePublished" datetime="2019-09-24T00:00:00+08:00">2019-09-24</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="text-GCD"><a href="#text-GCD" class="headerlink" title="$\text{GCD}$"></a>$\text{GCD}$</h3><p>普通的 $\gcd$ 算法相信我不用讲了吧（辗转相除法如果有问题的话应该不会来看我的 $\text{blog}$）。</p>
+<h3 id="text-ExtendedGCD"><a href="#text-ExtendedGCD" class="headerlink" title="$\text{ExtendedGCD}$"></a>$\text{ExtendedGCD}$</h3><p>接下来是拓展的欧几里得算法。</p>
+<p>拓展欧几里得算法是用来求已知 $(a, b)$ 时，求解一组 $(x, y)$ 使得 $ax + by = \gcd(a,b)$ 。</p>
+<p>因为 <script type="math/tex">\gcd(a, b) = \gcd(b, a \bmod b) = \gcd(b, a - \left \lfloor \frac{a}{b} \right \rfloor b )</script> </p>
+<p>所以 <script type="math/tex">ax + by = bx' + (a - \left \lfloor \frac{a}{b} \right \rfloor b)y'</script></p>
+<script type="math/tex; mode=display">ax + by = ay' + b(x' - \left \lfloor \frac{a}{b} \right \rfloor y')</script><p>对比系数，可得<script type="math/tex">(x, y) = (y', x' - \left \lfloor \frac{a}{b} \right \rfloor y')</script></p>
+<p>由此，我们就可以将 $(a, b)$ 递归下去，转移到 $(b, a \bmod b)$ ，回溯时再将解也进行转移。</p>
+<p>考虑到 $(a,b)$ 一定会转移到 $b=0$ 的情况，此时的 $(x, y) = (1, 0)$ ，再递归回去即可求出最终解</p>
+<h3 id="text-Code"><a href="#text-Code" class="headerlink" title="$\text{Code}$"></a>$\text{Code}$</h3><p>本人习惯数学题写 $\text{int}$ ，然后在开头加上宏定义 $\text{define int long long}$ （$\text{LL}$, $\text{long long}$ 什么的真的太难写了）</p>
+<figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//------------------- GCD ---------------------</span></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">GCD</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">return</span> b == <span class="number">0</span> ? a : <span class="built_in">GCD</span>(b, a % b);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//--------------- Extended GCD -------------------</span></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="type">int</span> <span class="title">ExtendedGCD</span><span class="params">(<span class="type">int</span> a, <span class="type">int</span> b, <span class="type">int</span>&amp; x, <span class="type">int</span>&amp; y)</span> </span>&#123;</span><br><span class="line">	<span class="keyword">if</span> (a == <span class="number">0</span> &amp;&amp; b == <span class="number">0</span>) <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">    <span class="keyword">if</span> (b == <span class="number">0</span>) &#123;</span><br><span class="line">        x = <span class="number">1</span>; y = <span class="number">0</span>;</span><br><span class="line">        <span class="keyword">return</span> a;</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="type">int</span> value = <span class="built_in">ExtendedGCD</span>(b, a % b, y, x);</span><br><span class="line">    y -= a / b * x;</span><br><span class="line">    <span class="keyword">return</span> value;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+
+    
+      
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        
+          
+        
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0/" rel="tag"># 学习笔记</a>
+          
+            <a href="/tags/%E6%95%B0%E5%AD%A6/" rel="tag"># 数学</a>
+          
+            <a href="/tags/%E6%95%B0%E8%AE%BA/" rel="tag"># 数论</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/24/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91CRT-&-ExtendedCRT/" rel="next" title="【学习笔记】CRT & ExtendedCRT">
+                <i class="fa fa-chevron-left"></i> 【学习笔记】CRT & ExtendedCRT
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/09/25/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91Lucas-&-ExtendedLucas/" rel="prev" title="【学习笔记】Lucas & ExtendedLucas">
+                【学习笔记】Lucas & ExtendedLucas <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+  </div>
+
+
+          </div>
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image"
+      src="/images/logo.jpg"
+      alt="Nekroz"/>
+  
+  <p class="site-author-name" itemprop="name">Nekroz</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/%20%7C%7C%20archive">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/%20%7C%7C%20tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/nekrozcoder" title="GitHub &rarr; https://github.com/nekrozcoder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+      <!--noindex-->
+        <div class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+            
+            
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#text-GCD"><span class="nav-number">1.</span> <span class="nav-text">$\text{GCD}$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#text-ExtendedGCD"><span class="nav-number">2.</span> <span class="nav-text">$\text{ExtendedGCD}$</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#text-Code"><span class="nav-number">3.</span> <span class="nav-text">$\text{Code}$</span></a></li></ol></div>
+            
+
+          </div>
+        </div>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nekroz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+  <script src="/js/scrollspy.js?v=7.2.0"></script>
+<script src="/js/post-details.js?v=7.2.0"></script>
+
+
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  
+
+  
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>

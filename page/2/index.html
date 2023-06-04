@@ -1,23 +1,2439 @@
-{% extends '_layout.swig' %}
-{% import '_macro/post.swig' as post_template %}
-{% import '_macro/sidebar.swig' as sidebar_template %}
+<!DOCTYPE html>
 
-{% block title %}{{ title }}{% if theme.index_with_subtitle and subtitle %} - {{ subtitle }}{% endif %}{% endblock %}
 
-{% block page_class %}
-  {% if is_home() %}page-home{% endif -%}
-{% endblock %}
 
-{% block content %}
+
+
+
+
+
+
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-CN">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+<meta name="theme-color" content="#222"/>
+
+
+
+
+
+
+
+
+
+
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=7.2.0">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=7.2.0">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=7.2.0" color="#222">
+
+
+
+
+
+
+<link rel="stylesheet" href="/css/main.css?v=7.2.0"/>
+
+
+
+
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css?v=4.7.0"/>
+
+
+
+
+
+
+
+
+<script id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '7.2.0',
+    sidebar: {"position":"left","display":"post","offset":12,"onmobile":false},
+    back2top: {"enable":true,"sidebar":false,"scrollpercent":false},
+    copycode: {"enable":false,"show_result":false,"style":null},
+    fancybox: false,
+    mediumzoom: false,
+    lazyload: false,
+    pangu: false,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    },
+    translation: {
+      copy_button: '复制',
+      copy_success: '复制成功',
+      copy_failure: '复制失败'
+    }
+  };
+</script>
+
+  <meta property="og:type" content="website">
+<meta property="og:title" content="Nekroz&#39;s Blog">
+<meta property="og:url" content="http://nekrozcoder.github.io/page/2/index.html">
+<meta property="og:site_name" content="Nekroz&#39;s Blog">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:author" content="Nekroz">
+<meta name="twitter:card" content="summary">
+
+
+
+
+
+  
+  
+  <link rel="canonical" href="http://nekrozcoder.github.io/page/2/"/>
+
+
+
+<script id="page.configurations">
+  CONFIG.page = {
+    sidebar: "",
+  };
+</script>
+
+  
+  <title>Nekroz's Blog</title>
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .motion-element,
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-title { opacity: initial; }
+
+  .use-motion .logo,
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+<meta name="generator" content="Hexo 6.3.0"><!-- hexo-inject:begin --><!-- hexo-inject:end --></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-CN">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left 
+  page-home">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Nekroz's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+    
+    
+  </div>
+
+  <div class="site-nav-toggle">
+    <button aria-label="切换导航栏">
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  
+    <ul id="menu" class="menu">
+      
+        
+        
+        
+          
+          <li class="menu-item menu-item-home">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/" rel="section"><i class="menu-item-icon fa fa-fw fa-home"></i> <br/>首页</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-about">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/about/" rel="section"><i class="menu-item-icon fa fa-fw fa-user"></i> <br/>关于</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-tags">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/tags/" rel="section"><i class="menu-item-icon fa fa-fw fa-tags"></i> <br/>标签</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-categories">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/categories/" rel="section"><i class="menu-item-icon fa fa-fw fa-th"></i> <br/>分类</a>
+
+  </li>
+        
+        
+        
+          
+          <li class="menu-item menu-item-archives">
+
+    
+    
+      
+    
+
+    
+
+    <a href="/archives/" rel="section"><i class="menu-item-icon fa fa-fw fa-archive"></i> <br/>归档</a>
+
+  </li>
+
+      
+      
+    </ul>
+  
+
+  
+
+  
+</nav>
+
+
+
+</div>
+    </header>
+
+    
+
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+            
+
+          
+          <div id="content" class="content">
+            
   <section id="posts" class="posts-expand">
-    {% for post in page.posts %}
-      {{ post_template.render(post, true) }}
-    {% endfor %}
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/08/08/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1096-%5BZJOI-2007%5D-%E4%BB%93%E5%BA%93%E5%BB%BA%E8%AE%BE/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/08/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1096-%5BZJOI-2007%5D-%E4%BB%93%E5%BA%93%E5%BB%BA%E8%AE%BE/" class="post-title-link" itemprop="url">【解题报告】BZOJ 1096 [ZJOI 2007] 仓库建设</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-08 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-08T00:00:00+08:00">2019-08-08</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-17 20:56:08" itemprop="dateModified" datetime="2019-09-17T20:56:08+08:00">2019-09-17</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              传送门
+$\text{Solution}$我们先考虑最朴素的 DP，令 $f_i$ 表示上一个仓库建设在第 $i$ 个点的最小花费。
+我们有
+
+\begin{aligned}
+f_i &= \min_{0\leq j时间复杂度为 $O(n^3)$ 严重超时，考虑用前缀和进行第一步优化：
+
+\begi
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/08/08/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-1096-%5BZJOI-2007%5D-%E4%BB%93%E5%BA%93%E5%BB%BA%E8%AE%BE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/08/06/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-BIT/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/06/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-BIT/" class="post-title-link" itemprop="url">【学习笔记】树状数组 BIT</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-06 00:00:00 / 修改时间：19:09:52" itemprop="dateCreated datePublished" datetime="2019-08-06T00:00:00+08:00">2019-08-06</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              树状数组（Binary Indexed Tree），又名二叉索引树，Fenwick树，其处理的问题模型一般可以转化为如下形式：定义一个数组 $a[1 .. n ]$，并维护一下两个操作：
+
+修改，给 $a[i]$ 加上某个增量 $delta$。
+查询，询问某个前缀 $a[1.. index]$ 的和
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/08/06/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E6%A0%91%E7%8A%B6%E6%95%B0%E7%BB%84-BIT/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/08/06/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-4717-%E8%A3%85%E5%A4%87/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/08/06/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-4717-%E8%A3%85%E5%A4%87/" class="post-title-link" itemprop="url">【解题报告】BZOJ 4717 装备</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-08-06 00:00:00" itemprop="dateCreated datePublished" datetime="2019-08-06T00:00:00+08:00">2019-08-06</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-17 20:54:33" itemprop="dateModified" datetime="2019-09-17T20:54:33+08:00">2019-09-17</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              传送门
+由于这道题是权限题，所以题面我也放在这里了（我不是权限狗）。
+$\text{Description}$【题目背景】
+　　小Q最近喜欢上了一款游戏，名为《舰队connection》，在游戏中，小Q指挥强大的舰队南征北战，从而成为了一名dalao。在游戏中，不仅船只能力很重要，搭配合适的装备更是
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/08/06/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-4717-%E8%A3%85%E5%A4%87/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/31/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E7%BB%84/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/31/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E7%BB%84/" class="post-title-link" itemprop="url">【学习笔记】可持久化数组</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-31 00:00:00 / 修改时间：13:34:36" itemprop="dateCreated datePublished" datetime="2019-07-31T00:00:00+08:00">2019-07-31</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              可持久化数组是由可持久化线段树或可持久化平衡树实现的。这里先给出可持久化线段树的实现方法。
+为了方便起见，处理的数组长度为5， 起始的数组元素为1~5，修改是将第一个位置的数组元素改为2。建树规则很简单，只要在叶子节点上写上该点的值就可以了。
+先根据原数组建一棵线段树
+第一次修改之后的线段树我们发现
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/31/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E6%95%B0%E7%BB%84/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/31/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%BA%BF%E6%AE%B5%E6%A0%91/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/31/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%BA%BF%E6%AE%B5%E6%A0%91/" class="post-title-link" itemprop="url">【学习笔记】线段树</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-31 00:00:00 / 修改时间：13:34:47" itemprop="dateCreated datePublished" datetime="2019-07-31T00:00:00+08:00">2019-07-31</time>
+            </span>
+          
+
+          
+            
+
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              由于线段树在OI中的运用十分灵活，没有固定性的模板，这里就给出能够完成以下操作的线段树：1.给一段区间加上一个值2.询问一个区间内数值的总和$lazy-tag$是个好东西，要养成写$lazy-tag$的好习惯。
+先码上一个链表版本的线段树：链表线段树很简单（不是假的），像我这样的蒟蒻就是因为静态数组
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/31/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%BA%BF%E6%AE%B5%E6%A0%91/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/31/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-3674-%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E5%B9%B6%E6%9F%A5%E9%9B%86%E5%8A%A0%E5%BC%BA%E7%89%88/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/31/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-3674-%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E5%B9%B6%E6%9F%A5%E9%9B%86%E5%8A%A0%E5%BC%BA%E7%89%88/" class="post-title-link" itemprop="url">【解题报告】BZOJ 3674 可持久化并查集加强版</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-31T00:00:00+08:00">2019-07-31</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-17 20:55:53" itemprop="dateModified" datetime="2019-09-17T20:55:53+08:00">2019-09-17</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              传送门
+$\text{Solution}$题目是可持久化并查集加强版，其实并没有加强，只是原题可以用离线算法水过，而这道题才是用来练可持久化并查集的板子题。首先对于学习可持久化并查集有一个先决条件，就是学会用可持久化线段树实现可持久化数组，如果不会的可以戳这。接下来我们就来讲讲怎么用可持久化数组实现
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/31/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91BZOJ-3674-%E5%8F%AF%E6%8C%81%E4%B9%85%E5%8C%96%E5%B9%B6%E6%9F%A5%E9%9B%86%E5%8A%A0%E5%BC%BA%E7%89%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/31/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91Codeforces-786B-Legacy/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/31/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91Codeforces-786B-Legacy/" class="post-title-link" itemprop="url">【解题报告】Codeforces 786B Legacy</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-31 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-31T00:00:00+08:00">2019-07-31</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-17 20:53:00" itemprop="dateModified" datetime="2019-09-17T20:53:00+08:00">2019-09-17</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              传送门
+$\text{Solution}$题目意思很简单，就是你有三种操作：1 u v w 从u向v连一条权值为w的有向边2 u L R w 从u向L至R的所有结点连一条权值为w的有向边3 u L R w 从L至R的所有结点向u连一条权值为w的有向边首先看到题目，马上就明白不是暴力能够解决的事情（毕
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/31/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91Codeforces-786B-Legacy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/30/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%9F%A9%E9%98%B5%20Matrix/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/30/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%9F%A9%E9%98%B5%20Matrix/" class="post-title-link" itemprop="url">【学习笔记】矩阵 Matrix</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-30 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-30T00:00:00+08:00">2019-07-30</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-24 19:57:11" itemprop="dateModified" datetime="2019-09-24T19:57:11+08:00">2019-09-24</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              矩阵的运算法则$ \huge + $ 加法，两个行数和列数分别相同的矩阵可以进行加法运算，Ans矩阵每个位置上的数为两个矩阵相应位置上的数的和$ \huge - $ 减法，与加法类似两个行数和列数分别相同的矩阵可以进行减法运算，Ans矩阵每个位置上的数为两个矩阵相应位置上的数的差$ \huge  $
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/30/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91%E7%9F%A9%E9%98%B5%20Matrix/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/30/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91CF%20731D%2080-th%20Level%20Archeology/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/30/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91CF%20731D%2080-th%20Level%20Archeology/" class="post-title-link" itemprop="url">【解题报告】 CF 731D 80-th Level Archeology</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-30 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-30T00:00:00+08:00">2019-07-30</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-09-17 20:53:41" itemprop="dateModified" datetime="2019-09-17T20:53:41+08:00">2019-09-17</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              $\text{Description}$有n个数列，每个数列长度可能不一样，同时有一个c，你有一种操作，让这n个数列中所有小于c的数都加1，所有等于c的数变成0.问你最少可以操作几次可以让这n个数列满足字典序.
+$\text{Solution}$我们可以发现，对于任意两个相邻的数列，操作数k有一个符
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/30/%E3%80%90%E8%A7%A3%E9%A2%98%E6%8A%A5%E5%91%8A%E3%80%91CF%20731D%2080-th%20Level%20Archeology/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://NekrozCoder.github.io/2019/07/28/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91LCA%20%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/"/>
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Nekroz"/>
+      <meta itemprop="description" content=""/>
+      <meta itemprop="image" content="/images/logo.jpg"/>
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Nekroz's Blog"/>
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                
+                <a href="/2019/07/28/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91LCA%20%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/" class="post-title-link" itemprop="url">【学习笔记】LCA 最近公共祖先</a>
+              
+            
+          </h1>
+        
+
+        <div class="post-meta">
+
+          
+          
+          
+
+          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2019-07-28 00:00:00" itemprop="dateCreated datePublished" datetime="2019-07-28T00:00:00+08:00">2019-07-28</time>
+            </span>
+          
+
+          
+            
+
+            
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-calendar-check-o"></i>
+                </span>
+                
+                  <span class="post-meta-item-text">更新于</span>
+                
+                <time title="修改时间：2019-07-31 13:34:22" itemprop="dateModified" datetime="2019-07-31T13:34:22+08:00">2019-07-31</time>
+              </span>
+            
+          
+
+          
+
+          
+            
+            
+          
+
+          
+          
+
+          
+
+          
+
+          <br/>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>
+              浅析 LCA定义LCA（Least Common Ancestors），即最近公共祖先，指对于有根树 $T$ 的两个结点 $u$ 、$v$ ，最近公共祖先 $LCA(T, u, v)$ 表示一个结点 $x$, 满足 $x$ 是 $u$、$v$ 的祖先且 $x$ 的深度尽可能大。 
+下面给出一个自己画
+              ...
+            </p>
+          <!--noindex-->
+          
+            <div class="post-button text-center">
+              <a class="btn" href="/2019/07/28/%E3%80%90%E5%AD%A6%E4%B9%A0%E7%AC%94%E8%AE%B0%E3%80%91LCA%20%E6%9C%80%E8%BF%91%E5%85%AC%E5%85%B1%E7%A5%96%E5%85%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+
+    
+
+    
+    
+    
+
+    
+
+    
+      
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
-  {% include '_partials/pagination.swig' %}
-{% endblock %}
+  
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot; aria-label&#x3D;&quot;上一页&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot; aria-label&#x3D;&quot;下一页&quot;&gt;&lt;&#x2F;i&gt;</a>
+  </nav>
 
-{% block sidebar %}
-  {{ sidebar_template.render(false) }}
-{% endblock %}
+
+
+          </div>
+          
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    <div class="sidebar-inner">
+
+      
+
+      
+
+      <div class="site-overview-wrap sidebar-panel sidebar-panel-active">
+        <div class="site-overview">
+
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  
+    <img class="site-author-image" itemprop="image"
+      src="/images/logo.jpg"
+      alt="Nekroz"/>
+  
+  <p class="site-author-name" itemprop="name">Nekroz</p>
+  <div class="site-description motion-element" itemprop="description"></div>
+</div>
+
+
+  <nav class="site-state motion-element">
+    
+      <div class="site-state-item site-state-posts">
+        
+          <a href="/archives/%20%7C%7C%20archive">
+        
+          <span class="site-state-item-count">21</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+    
+
+    
+
+    
+      
+      
+      <div class="site-state-item site-state-tags">
+        
+          
+            <a href="/tags/%20%7C%7C%20tags">
+          
+        
+        
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+          
+        
+        <span class="site-state-item-count">25</span>
+        <span class="site-state-item-name">标签</span>
+        </a>
+      </div>
+    
+  </nav>
+
+
+
+
+
+
+
+  <div class="links-of-author motion-element">
+    
+      <span class="links-of-author-item">
+      
+      
+        
+      
+      
+        
+      
+        <a href="https://github.com/nekrozcoder" title="GitHub &rarr; https://github.com/nekrozcoder" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+    
+  </div>
+
+
+
+
+
+
+
+          
+          
+        </div>
+      </div>
+
+      
+
+      
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2023</span>
+  <span class="with-love" id="animate">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Nekroz</span>
+
+  
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a href="https://hexo.io" class="theme-link" rel="noopener" target="_blank">Hexo</a> 强力驱动 v6.3.0</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 – <a href="https://theme-next.org" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> v7.2.0</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+    
+
+    
+
+  </div>
+
+  
+
+<script>
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+
+
+
+
+
+
+
+
+
+  
+  <script src="/lib/jquery/index.js?v=3.4.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+
+
+
+  <script src="/js/utils.js?v=7.2.0"></script>
+
+  <script src="/js/motion.js?v=7.2.0"></script>
+
+
+
+  
+  
+
+
+  <script src="/js/affix.js?v=7.2.0"></script>
+
+  <script src="/js/schemes/pisces.js?v=7.2.0"></script>
+
+
+
+
+  
+
+  <script src="/js/next-boot.js?v=7.2.0"></script>
+
+  
+
+  
+
+  
+
+
+  
+  
+
+  
+  
+    
+      
+        
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+      
+    
+  
+
+  
+    
+      <script type="text/x-mathjax-config">
+  
+
+  MathJax.Hub.Config({
+    tex2jax: {
+      inlineMath: [ ['$', '$'], ['\\(', '\\)'] ],
+      processEscapes: true,
+      skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+    },
+    TeX: {
+      
+      equationNumbers: {
+        autoNumber: 'AMS'
+      }
+    }
+  });
+
+  MathJax.Hub.Register.StartupHook('TeX Jax Ready', function() {
+    MathJax.InputJax.TeX.prefilterHooks.Add(function(data) {
+      if (data.display) {
+        var next = data.script.nextSibling;
+        while (next && next.nodeName.toLowerCase() === '#text') {
+          next = next.nextSibling;
+        }
+        if (next && next.nodeName.toLowerCase() === 'br') {
+          next.parentNode.removeChild(next);
+        }
+      }
+    });
+  });
+
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for (i = 0; i < all.length; i += 1) {
+      element = document.getElementById(all[i].inputID + '-Frame').parentNode;
+      if (element.nodeName.toLowerCase() == 'li') {
+        element = element.parentNode;
+      }
+      element.classList.add('has-jax');
+    }
+  });
+</script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+
+    
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// GET RESPONSIVE HEIGHT PASSED FROM IFRAME
+
+window.addEventListener("message", function(e) {
+  var data = e.data;
+  if ((typeof data === 'string') && (data.indexOf('ciu_embed') > -1)) {
+    var featureID = data.split(':')[1];
+    var height = data.split(':')[2];
+    $(`iframe[data-feature=${featureID}]`).height(parseInt(height) + 30);
+  }
+}, false);
+</script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+  
+
+</body>
+</html>
